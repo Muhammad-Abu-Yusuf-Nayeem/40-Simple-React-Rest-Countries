@@ -3,7 +3,7 @@ import Country from "../country/Country";
 
 const Countries = () => {
   const [countries, setCountries] = useState([]);
-  const [visitedContries, setVisitedCountries] = useState([]);
+  const [visitedCountries, setVisitedCountries] = useState([]);
   useEffect(() => {
     fetch(
       "https://restcountries.com/v3.1/all?fields=borders,timezones,area,name,capital,flags,codes,currencies,languages,population"
@@ -13,14 +13,19 @@ const Countries = () => {
   }, []);
 
   const handleVisitedCountry = (country) => {
-    console.log("add this to your visited country");
+    console.log(country);
+    setVisitedCountries([...visitedCountries, country]);
   };
   return (
     <div>
       <h4>countries {countries.length}</h4>
       <div>
-        <h5>Visited Countries</h5>
-        <ol></ol>
+        <h5>Visited Countries {visitedCountries.length}</h5>
+        <ol>
+          {visitedCountries.map((country) => (
+            <li key={country.name.common}>{country.name.common}</li>
+          ))}
+        </ol>
       </div>
       <div
         style={{
@@ -29,7 +34,11 @@ const Countries = () => {
         }}
       >
         {countries.map((country) => (
-          <Country key={country.population} country={country} handleVisitedCountry={handleVisitedCountry}></Country>
+          <Country
+            key={country.name.common}
+            country={country}
+            handleVisitedCountry={handleVisitedCountry}
+          ></Country>
         ))}
       </div>
     </div>
